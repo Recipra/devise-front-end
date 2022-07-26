@@ -1,17 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AddAssignment from '../../components/AddAssignment/AddAssignment'
 import AssignmentList from '../../components/AssignmentList/AssignmentList'
 import * as assignmentService from '../../services/assignmentService'
 import styles from './Landing.module.css'
 
-const Landing = ({ user, userProfile }) => {
+const Landing = ({ user }) => {
   const [assignments, setAssignments] = useState([])
 
   const handleAddAssignment = async (newAssignmentData) => {
     const newAssignment = await assignmentService.addAssignment(newAssignmentData, user.profile)
     setAssignments([...assignments, newAssignment])
   }
-  console.log(assignments)
+
+  useEffect(() => {
+    const fetchAllAssignments = async () => {
+      const assignmentData = await assignmentService.getAllAssignments(user?.profile)
+      setAssignments(assignmentData)
+    }
+    fetchAllAssignments()
+  }, [user])
+
   return (
     <main className={styles.container}>
       {user ?

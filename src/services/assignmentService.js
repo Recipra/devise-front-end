@@ -14,4 +14,13 @@ async function addAssignment(assignmentData, profileId) {
   return await res.json()
 }
 
-export { addAssignment }
+async function getAllAssignments(profileId) {
+  const res = await fetch(`${BASE_URL}/${profileId}`, {
+    headers: {
+      'Authorization': `Bearer ${tokenService.getToken()}`
+    }
+  })
+  return await res.json()
+}
+
+export { addAssignment, getAllAssignments }
