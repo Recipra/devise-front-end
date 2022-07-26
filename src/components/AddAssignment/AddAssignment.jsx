@@ -1,16 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './AddAssignment.module.css'
 
-const AddAssignment = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    dueDate: '',
-    estTime: 0
-  })
+const AddAssignment = ({user, handleAddAssignment}) => {
+  const formElement = useRef()
+  const [validForm, setValidForm] = useState(false)
 
   const currentDate = new Date()
   currentDate.setDate(currentDate.getDate() + 1)
   const date = currentDate.toISOString().substring(0, 10)
+
+  const [formData, setFormData] = useState({
+    name: '',
+    dueDate: date,
+    estTime: 0
+  })
+  
+  useEffect(() => {
+    formElement.current.checkValidity() ? setValidForm(true) : setValidForm(false)
+  }, [formData])
 
   const handleChange = (event) => {
     setFormData({...formData, [event.target.name]: event.target.value})
@@ -18,18 +25,19 @@ const AddAssignment = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    handleAddAssignment(formData, user.profile)
   }
 
   return (
     <div className={styles.assignmentForm}>
-      <form autoComplete='off' onSubmit={handleSubmit}>
+      <form autoComplete='off' ref={formElement} onSubmit={handleSubmit}>
         <p>Assignment Name:</p>
-        <input type="text" placeholder='Ex. Arrays Lab' name='name' onChange={handleChange}/>
+        <input type="text" placeholder='Ex. Arrays Lab' name='name' onChange={handleChange} required/>
         <p>Due Date:</p>
-        <input type="date" placeholder='Enter the due date' name='dueDate' defaultValue={date} onChange={handleChange}/>
+        <input type="date" placeholder='Enter the due date' name='dueDate' defaultValue={date} onChange={handleChange} required/>
         <p>Est. Time (hours):</p>
-        <input type="number" placeholder='Ex. 2' name='estTime' onChange={handleChange}/><br />
-        <button type='submit'>Add Assignment</button>
+        <input type="number" placeholder='Ex. 2' name='estTime' onChange={handleChange} required/><br />
+        <button type='submit' disabled={!validForm}>Add Assignment</button>
       </form>
     </div>
   );

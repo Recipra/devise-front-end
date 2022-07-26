@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import NavBar from './components/NavBar/NavBar'
 import Signup from './pages/Signup/Signup'
@@ -7,9 +7,11 @@ import Landing from './pages/Landing/Landing'
 import Profiles from './pages/Profiles/Profiles'
 import ChangePassword from './pages/ChangePassword/ChangePassword'
 import * as authService from './services/authService'
+import * as profileService from './services/profileService'
 
 const App = () => {
   const [user, setUser] = useState(authService.getUser())
+  const [userProfile, setUserProfile] = useState()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -22,11 +24,20 @@ const App = () => {
     setUser(authService.getUser())
   }
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const profileData = await profileService.getAllProfiles()
+      const userProf = profileData.filter(profile => profile._id === user.profile)
+      setUserProfile(userProf[0])
+    }
+    fetchUserProfile()
+  }, [user])
+
   return (
     <>
       <NavBar user={user} handleLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<Landing user={user} />} />
+        <Route path="/" element={<Landing user={user} userProfile={userProfile}/>} />
         <Route
           path="/signup"
           element={<Signup handleSignupOrLogin={handleSignupOrLogin} />}
