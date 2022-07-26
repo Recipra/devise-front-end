@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import AddAssignment from '../../components/AddAssignment/AddAssignment'
+import AssignmentList from '../../components/AssignmentList/AssignmentList'
 import * as assignmentService from '../../services/assignmentService'
 import styles from './Landing.module.css'
 
 const Landing = ({ user, userProfile }) => {
-  const [assignments, setAssignments] = useState([userProfile?.assignments])
+  const [assignments, setAssignments] = useState([])
 
   const handleAddAssignment = async (newAssignmentData) => {
     const newAssignment = await assignmentService.addAssignment(newAssignmentData, user.profile)
     setAssignments([...assignments, newAssignment])
   }
-
+  console.log(assignments)
   return (
     <main className={styles.container}>
       {user ?
@@ -26,6 +27,7 @@ const Landing = ({ user, userProfile }) => {
             </div>
             <div className={styles.assignmentList}>
               <h3>Assignment list</h3>
+              <AssignmentList assignments={assignments}/>
             </div>
           </div>
         </>
