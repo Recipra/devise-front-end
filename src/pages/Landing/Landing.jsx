@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import AddAssignment from '../../components/AddAssignment/AddAssignment'
 import AssignmentList from '../../components/AssignmentList/AssignmentList'
+import UpcomingList from '../../components/UpcomingList/UpcomingList'
 import * as assignmentService from '../../services/assignmentService'
 import styles from './Landing.module.css'
 
@@ -19,7 +20,7 @@ const Landing = ({ user }) => {
     }
     fetchAllAssignments()
   }, [user])
-
+  
   return (
     <main className={styles.container}>
       {user ?
@@ -29,9 +30,6 @@ const Landing = ({ user }) => {
             <div className={styles.addAssignment}>
               <h3>Add an assignment</h3>
               <AddAssignment user={user} handleAddAssignment={handleAddAssignment}/>
-            </div>
-            <div className={styles.upcoming}>
-              <h3>Upcoming</h3>
             </div>
             <div className={styles.assignmentList}>
               <h3>Assignment list</h3>

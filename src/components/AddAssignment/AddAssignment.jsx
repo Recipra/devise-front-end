@@ -12,7 +12,7 @@ const AddAssignment = ({user, handleAddAssignment}) => {
 
   const [formData, setFormData] = useState({
     name: '',
-    dueDate: date,
+    dueDate: dueDate,
     estTime: 1
   })
   
