@@ -14,6 +14,18 @@ async function addAssignment(assignmentData, profileId) {
   return await res.json()
 }
 
+async function editAssignment(editData, profileId, assignmentId) {
+  const res = await fetch(`${BASE_URL}/${profileId}/${assignmentId}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${tokenService.getToken()}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(editData)
+  })
+  return await res.json()
+}
+
 async function getAllAssignments(profileId) {
   const res = await fetch(`${BASE_URL}/${profileId}`, {
     headers: {
@@ -31,4 +43,4 @@ async function deleteAssignment(profileId, assignmentId) {
   return await res.json()
 }
 
-export { addAssignment, getAllAssignments, deleteAssignment }
+export { addAssignment, getAllAssignments, deleteAssignment, editAssignment }
