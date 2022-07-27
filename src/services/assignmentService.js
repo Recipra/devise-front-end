@@ -23,4 +23,12 @@ async function getAllAssignments(profileId) {
   return await res.json()
 }
 
-export { addAssignment, getAllAssignments }
+async function deleteAssignment(profileId, assignmentId) {
+  const res = await fetch(`${BASE_URL}/${profileId}/${assignmentId}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${tokenService.getToken()}`}
+  })
+  return await res.json()
+}
+
+export { addAssignment, getAllAssignments, deleteAssignment }

@@ -13,6 +13,11 @@ const Landing = ({ user }) => {
     setAssignments([...assignments, newAssignment])
   }
 
+  const handleDeleteAssignment = async (profileId, assignmentId) => {
+    const newAssignmentsArray = await assignmentService.deleteAssignment(profileId, assignmentId)
+    setAssignments(newAssignmentsArray)
+  }
+
   useEffect(() => {
     const fetchAllAssignments = async () => {
       const assignmentData = await assignmentService.getAllAssignments(user?.profile)
@@ -33,7 +38,7 @@ const Landing = ({ user }) => {
             </div>
             <div className={styles.assignmentList}>
               <h3>Assignment list</h3>
-              <AssignmentList assignments={assignments}/>
+              <AssignmentList assignments={assignments} user={user} handleDeleteAssignment={handleDeleteAssignment}/>
             </div>
           </div>
         </>
